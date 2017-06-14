@@ -12,6 +12,7 @@ class UserActionsController < ApplicationController
     action.user = user
     wallet = action.user.wallets.first
     wallet.amount = params[:user_action][:wallet]
+    wallet.save
     render json: {action: action, wallet: wallet}
   end
 
