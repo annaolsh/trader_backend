@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  #skip_before_action :verify_authenticity_token
+protect_from_forgery :except => [:create]
 
   def index
     @users = User.all
@@ -7,10 +7,23 @@ class UsersController < ApplicationController
   end
 
   def create
-    user = User.new(user_params)
-    if user.valid?
-      user.save
-      render json: user
+    @user = User.new(username: params[:username], password: params[:password])
+    if @user.valid?
+      @user.shares = 0
+      @user.save
+      @user.wallets.create(amount: 1000)
+      token = JWT.encode({user_id: @user_id},ENV['JWT_SECRET'],'HS256')
+      render json: {
+          user: {
+            id: @user.id,
+            username: @user.username,
+            shares: @user.shares,
+            wallet: @user.wallets.first.amount
+          },
+          token: token
+        }
+      else
+        render json: {error: "Something went wrong. Try another username or password"}
     end
   end
 
@@ -19,11 +32,5 @@ class UsersController < ApplicationController
     render json: user
   end
 
-
-  private
-
-  def user_params
-    params.require(:user).permit(:username, :password)
-  end
 
 end
