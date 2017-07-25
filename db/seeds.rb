@@ -5,3 +5,5 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+companies = Company.create([{name: "Facebook", symbol: "FB"}, {name: "Apple", symbol: "AAPL"}, {name: "Microsoft", symbol: "MSFT"}])
