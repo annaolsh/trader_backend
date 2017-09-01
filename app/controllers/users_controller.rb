@@ -1,3 +1,4 @@
+
 class UsersController < ApplicationController
 protect_from_forgery :except => [:create]
 
@@ -29,9 +30,11 @@ protect_from_forgery :except => [:create]
 
   def show
     user = User.find(params[:id])
+    response = RestClient.get("http://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=AAPL&interval=1min&apikey=UBW6")
+    data = JSON.parse(response)
     actions = user.user_actions
     wallet = user.wallets.first.amount
-    render json: {user: user, actions: actions, wallet: wallet}
+    render json: {user: user, actions: actions, wallet: wallet, data: data}
   end
   # def create
   #   action = UserAction.new(action_params)
