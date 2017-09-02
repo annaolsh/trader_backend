@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   post '/actions', to: 'user_actions#create'
   post '/login', to: 'auth#create'
   post '/signup', to: 'users#create'
+  resources :companies, only: [:index, :show]
 end
